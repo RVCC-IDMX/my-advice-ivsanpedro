@@ -62,23 +62,6 @@ h1 {
   display: none;
 }
 
-.experiment-border {
-  border: 2px dashed black;
-  padding: 1rem;
-  border-radius: var(--radius-md);
-  margin-top: 1.5rem;
-}
-
-.card-badge {
-  display: inline-block;
-  background-color: var(--color-primary-end);
-  color: white;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  border-radius: var(--radius-md);
-  margin-top: 0.5rem;
-}
-
 main.main-container {
   flex: 1;
   display: flex;
@@ -207,4 +190,28 @@ form#preference-form button:hover {
   box-shadow: 0 0 0 2px pink;
   border: 5px solid transparent;
   padding: 1rem;
+}
+
+.experiment-border {
+  border: 2px dashed var(--color-accent);
+}
+
+.card-badge {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.workout-card {
+  position: relative;
+  border: 1px solid var(--color-muted);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
 }
