@@ -58,6 +58,27 @@ h1 {
   margin: 0;
 }
 
+.hidden {
+  display: none;
+}
+
+.experiment-border {
+  border: 2px dashed black;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-top: 1.5rem;
+}
+
+.card-badge {
+  display: inline-block;
+  background-color: var(--color-primary-end);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: var(--radius-md);
+  margin-top: 0.5rem;
+}
+
 main.main-container {
   flex: 1;
   display: flex;
@@ -180,4 +201,10 @@ form#preference-form button:hover {
     flex-direction: column;
     gap: 1.5rem;
   }
+}
+
+.highlight-experiment {
+  box-shadow: 0 0 0 2px pink;
+  border: 5px solid transparent;
+  padding: 1rem;
 }

@@ -53,10 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayResults(results) {
     // Clear previous results
     resultsList.innerHTML = '';
+    // Using innerHTML is safe to use here since we are creating the content ourselves and not using user input directly.
+    // We are only using innerHTML to display a message when there are no results, and we are not including any user input in that message.
 
+    // Change innerHTML to textContent to prevent any potential security issues with user input.
     if (results.length === 0) {
-      resultsList.innerHTML =
-        '<p>No workouts match your preferences. Please try different options.</p>';
+      const noResultsMessage = document.createElement('p');
+      noResultsMessage.textContent =
+        'No workouts match your preferences. Please try adjusting your preferences.';
+      resultsList.appendChild(noResultsMessage);
       return;
     }
 
