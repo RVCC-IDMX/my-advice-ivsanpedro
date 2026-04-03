@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Advice</title>
-    <link rel="stylesheet" href="/src/css/style.css" />
+    <title>Workout Recommender</title>
+    <link rel="stylesheet" href="/src/css/styles.css" />
   </head>
 
   <body>
@@ -20,7 +20,7 @@
           <div>
             <label for="type">Workout Type</label>
             <select id="type" name="type">
-              <option>Any Type</option>
+              <option value="">Any Type</option>
               <option>Cardio</option>
               <option>Strength</option>
               <option>Flexibility</option>
@@ -30,7 +30,7 @@
           <div>
             <label for="target">Target Area</label>
             <select id="target" name="target">
-              <option>Any Area</option>
+              <option value="">Any Area</option>
               <option>Full Body</option>
               <option>Upper Body</option>
               <option>Lower Body</option>
@@ -40,7 +40,7 @@
           <div>
             <label for="equipment">Equipment</label>
             <select id="equipment" name="equipment">
-              <option>Any Equipment</option>
+              <option value="">Any Equipment</option>
               <option>No Equipment</option>
               <option>Dumbbells</option>
               <option>Resistance Bands</option>
@@ -50,7 +50,7 @@
           <div>
             <label for="duration">Duration</label>
             <select id="duration" name="duration">
-              <option>Any Duration</option>
+              <option value="">Any Duration</option>
               <option>15 minutes</option>
               <option>30 minutes</option>
               <option>45 minutes</option>
@@ -60,7 +60,7 @@
           <div>
             <label for="difficulty">Difficulty</label>
             <select id="difficulty" name="difficulty">
-              <option>Any Difficulty</option>
+              <option value="">Any Difficulty</option>
               <option>Beginner</option>
               <option>Intermediate</option>
               <option>Advanced</option>
@@ -73,6 +73,8 @@
         <div id="results-list">Your recommended workouts will appear here.</div>
       </section>
     </main>
-    <script type="module" src="app.js"></script>
+
+    <script type="module" src="/src/js/app.js"></script>
+    <script type="module" src="/src/js/experiments.js"></script>
   </body>
 </html>
