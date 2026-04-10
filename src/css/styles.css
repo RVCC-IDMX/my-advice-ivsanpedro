@@ -217,8 +217,8 @@ form#preference-form button:hover {
 }
 
 .back-button {
-  background: var(--color-primary-start);
-  color: white;
+  background: white;
+  color: var(--color-primary-start);
   border: none;
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-sm);
