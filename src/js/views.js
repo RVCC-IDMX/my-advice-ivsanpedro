@@ -70,30 +70,12 @@ function createCard(workout) {
   card.className = 'workout-card';
   card.dataset.workoutName = workout.name;
 
+  // Only display the workout name on the card.
+  // Details will be shown in the detail view.
   const heading = document.createElement('h3');
   heading.textContent = workout.name;
 
-  const type = document.createElement('p');
-  type.textContent = workout.type;
-
-  const targetArea = document.createElement('p');
-  targetArea.textContent = workout.targetArea;
-
-  const equipment = document.createElement('p');
-  equipment.textContent = workout.equipment;
-
-  const duration = document.createElement('p');
-  duration.textContent = workout.durationMinutes + ' minutes';
-
-  const difficulty = document.createElement('p');
-  difficulty.textContent = workout.difficulty;
-
   card.appendChild(heading);
-  card.appendChild(type);
-  card.appendChild(targetArea);
-  card.appendChild(equipment);
-  card.appendChild(duration);
-  card.appendChild(difficulty);
 
   return card;
 }

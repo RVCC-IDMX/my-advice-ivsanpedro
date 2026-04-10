@@ -3,23 +3,10 @@ import { data } from './data.js';
 import { matchesAllPreferences } from './matching.js';
 import { showResults, showNoResults, showDetail } from './views.js';
 
-// Runs every 2 seconds to toggle the visibility of the subtitle, creating a blinking effect.
-const subtitle = document.querySelector('.subtitle');
-
-let isVisible = true;
-setInterval(() => {
-  if (isVisible) {
-    subtitle.classList.add('hidden');
-  } else {
-    subtitle.classList.remove('hidden');
-  }
-  isVisible = !isVisible;
-}, 2000);
-
 // Adds a footer into the HTML
 const footer = document.createElement('footer');
 const footerText = document.createElement('p');
-footerText.textContent = 'Built by Ivana San Pedro🧌';
+footerText.textContent = 'Built by Ivana San Pedro 2026';
 footer.appendChild(footerText);
 document.body.appendChild(footer);
 
@@ -27,10 +14,15 @@ document.body.appendChild(footer);
 const formSection = document.querySelector('.left-col');
 formSection.classList.add('highlight-experiment');
 
+// Adds a light blue border to the results section to highlight
+const resultsSection = document.querySelector('.right-col');
+resultsSection.classList.add('highlight-experiment');
+
+// Event listener for form submission and result handling
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#preference-form');
   const resultsList = document.querySelector('#results-list');
-
+  // Handle form submission
   form.addEventListener('submit', function (e) {
     // Prevent form from submitting normally
     e.preventDefault();
@@ -108,10 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add event listeners for card clicks and back button clicks
-  document
-    .querySelector('#results-list')
-    .addEventListener('click', handleCardClick);
-  document
-    .querySelector('#detail-view')
-    .addEventListener('click', handleBackButtonClick);
+  document.addEventListener('click', handleCardClick);
+  document.addEventListener('click', handleBackButtonClick);
 });
