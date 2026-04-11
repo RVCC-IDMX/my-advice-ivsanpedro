@@ -7,8 +7,8 @@ import { showResults, showNoResults, showDetail } from './views.js';
 const footer = document.createElement('footer');
 const footerText = document.createElement('p');
 footerText.textContent = 'Built by Ivana San Pedro 2026';
-footer.appendChild(footerText);
-document.body.appendChild(footer);
+footer.append(footerText);
+document.body.append(footer);
 
 // Adds a light pink border to the form section to highlight
 const formSection = document.querySelector('.left-col');

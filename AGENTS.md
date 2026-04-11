@@ -30,6 +30,7 @@ Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES mo
 - No `fetch()`, `async`, `await`, or Promises — all data must come from the local `data.js` array
 - Logic functions (filtering, matching, data) must not touch the DOM — keep them testable
 - Use addEventListener - not onClick
+- Use .append() — never .appendChild()
 
 
 ### HTML
@@ -74,3 +75,4 @@ src/css/style.css    ← all styles
 - Provide a breakdown of steps when providing a solution to an error. Knowing the reasoning behind each steps helps me learn the logic behind each issue. 
 - Ask one question at a time. This allows me to focus on the main goal. 
 - Create view functions, not HTML files. If I want a different page in the app, write a view function that accepts a container and data. 
+
