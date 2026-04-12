@@ -4,8 +4,8 @@
 
 // Experiment 1: Changing the heading text on page load
 // Changes the heading to "Welcome to My Awesome Site" when the page loads.
-const heading = document.querySelector('h1');
-heading.textContent = 'Welcome to My Awesome Site 🏋🏻‍♀️';
+// const heading = document.querySelector('h1');
+// heading.textContent = 'Welcome to My Awesome Site 🏋🏻‍♀️';
 
 // Experiment 2: Counting the number of workouts in the data and displaying it in the console
 // const allOptions = document.querySelectorAll('option');
@@ -40,5 +40,5 @@ setInterval(() => {
     subtitle.classList.remove('hidden');
   }
   isVisible = !isVisible;
-}, 1500);
-// Runs every 1.5 seconds to toggle the visibility of the subtitle, creating a blinking effect.
+}, 2000);
+// Runs every 2 seconds to toggle the visibility of the subtitle, creating a blinking effect.

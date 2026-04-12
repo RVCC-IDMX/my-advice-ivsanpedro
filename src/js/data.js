@@ -8,7 +8,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Beginner',
-      image: 'images/squats.svg',
     },
     {
       name: 'Jumping Jacks',
@@ -17,7 +16,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Beginner',
-      image: 'images/jumping-jacks.svg',
     },
     {
       name: 'Push-Ups',
@@ -26,7 +24,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Beginner',
-      image: 'images/pushups.svg',
     },
     {
       name: 'Dumbbell Lunges',
@@ -35,7 +32,6 @@ export const data = {
       equipment: 'Dumbbells',
       durationMinutes: 30,
       difficulty: 'Intermediate',
-      image: 'images/lunges.svg',
     },
     {
       name: 'Mountain Climbers',
@@ -44,7 +40,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Intermediate',
-      image: 'images/mountain-climbers.svg',
     },
     {
       name: 'Plank',
@@ -53,7 +48,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Beginner',
-      image: 'images/plank.svg',
     },
     {
       name: 'Resistance Band Rows',
@@ -62,7 +56,6 @@ export const data = {
       equipment: 'Resistance Bands',
       durationMinutes: 30,
       difficulty: 'Intermediate',
-      image: 'images/band-rows.svg',
     },
     {
       name: 'Kettlebell Swings',
@@ -71,7 +64,6 @@ export const data = {
       equipment: 'Kettlebell',
       durationMinutes: 30,
       difficulty: 'Advanced',
-      image: 'images/kettlebell-swings.svg',
     },
     {
       name: 'Yoga Sun Salutation',
@@ -80,7 +72,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 30,
       difficulty: 'Beginner',
-      image: 'images/sun-salutation.svg',
     },
     {
       name: 'Burpees',
@@ -89,7 +80,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Advanced',
-      image: 'images/burpees.svg',
     },
     {
       name: 'Dumbbell Shoulder Press',
@@ -98,7 +88,6 @@ export const data = {
       equipment: 'Dumbbells',
       durationMinutes: 30,
       difficulty: 'Intermediate',
-      image: 'images/shoulder-press.svg',
     },
     {
       name: 'Hamstring Stretch',
@@ -107,7 +96,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Beginner',
-      image: 'images/hamstring-stretch.svg',
     },
     {
       name: 'Russian Twists',
@@ -116,7 +104,6 @@ export const data = {
       equipment: 'No Equipment',
       durationMinutes: 15,
       difficulty: 'Intermediate',
-      image: 'images/russian-twists.svg',
     },
     {
       name: 'Resistance Band Squats',
@@ -125,7 +112,6 @@ export const data = {
       equipment: 'Resistance Bands',
       durationMinutes: 30,
       difficulty: 'Intermediate',
-      image: 'images/band-squats.svg',
     },
     {
       name: 'Kettlebell Deadlift',
@@ -134,7 +120,6 @@ export const data = {
       equipment: 'Kettlebell',
       durationMinutes: 45,
       difficulty: 'Advanced',
-      image: 'images/kettlebell-deadlift.svg',
     },
   ],
 };

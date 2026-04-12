@@ -2,7 +2,8 @@
 
 ## About this student
 
-JavaScript student, post-midterm. Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES modules (`import`/`export`), npm, git, Netlify. Has NOT done async or APIs yet. Is about to learn DOM manipulation. 
+JavaScript student, post-midterm. Just learned about view and event functions, DOM manipulation, SPA, and callback functions.
+Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES modules (`import`/`export`), npm, git, and Netlify. Has NOT done async or APIs yet. 
 
 ## How to help
 
@@ -28,6 +29,9 @@ JavaScript student, post-midterm. Knows: `const`/`let`, template literals, `if/e
 - No `eval()`; `console.log` is allowed for debugging during development
 - No `fetch()`, `async`, `await`, or Promises — all data must come from the local `data.js` array
 - Logic functions (filtering, matching, data) must not touch the DOM — keep them testable
+- Use addEventListener - not onClick
+- Use .append() — never .appendChild()
+
 
 ### HTML
 
@@ -68,4 +72,7 @@ src/css/style.css    ← all styles
 
 - When I ask you to explain something, use an analogy before showing code.
 - I work better with short examples I can run immediately, not long complete solutions.
-- Ask one question at a time
+- Provide a breakdown of steps when providing a solution to an error. Knowing the reasoning behind each steps helps me learn the logic behind each issue. 
+- Ask one question at a time. This allows me to focus on the main goal. 
+- Create view functions, not HTML files. If I want a different page in the app, write a view function that accepts a container and data. 
+
