@@ -1,11 +1,28 @@
 // app.js for Workout Recommender
 import { data } from './data.js';
 import { matchesAllPreferences } from './matching.js';
+import { showResults, showNoResults, showDetail } from './views.js';
 
+// Adds a footer into the HTML
+const footer = document.createElement('footer');
+const footerText = document.createElement('p');
+footerText.textContent = 'Built by Ivana San Pedro 2026';
+footer.append(footerText);
+document.body.append(footer);
+
+// Adds a light pink border to the form section to highlight
+const formSection = document.querySelector('.left-col');
+formSection.classList.add('highlight-experiment');
+
+// Adds a light blue border to the results section to highlight
+const resultsSection = document.querySelector('.right-col');
+resultsSection.classList.add('highlight-experiment');
+
+// Event listener for form submission and result handling
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#preference-form');
   const resultsList = document.querySelector('#results-list');
-
+  // Handle form submission
   form.addEventListener('submit', function (e) {
     // Prevent form from submitting normally
     e.preventDefault();
@@ -28,7 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const results = findResults(preferences);
 
     // Display the results
-    displayResults(results);
+    if (results.length === 0) {
+      showNoResults(resultsList);
+      return;
+    } else {
+      showResults(results, resultsList);
+    }
   });
 
   /**
@@ -50,57 +72,34 @@ document.addEventListener('DOMContentLoaded', () => {
     return results;
   }
 
-  function displayResults(results) {
-    // Clear previous results
-    resultsList.innerHTML = '';
-    // Using innerHTML is safe to use here since we are creating the content ourselves and not using user input directly.
-    // We are only using innerHTML to display a message when there are no results, and we are not including any user input in that message.
+  function handleCardClick(e) {
+    // Check if the click was on a card or inside a card
+    const card = e.target.closest('.workout-card');
+    if (!card) return; // Click was outside a card
 
-    // Change innerHTML to textContent to prevent any potential security issues with user input.
-    if (results.length === 0) {
-      const noResultsMessage = document.createElement('p');
-      noResultsMessage.textContent =
-        'No workouts match your preferences. Please try adjusting your preferences.';
-      resultsList.appendChild(noResultsMessage);
-      return;
-    }
+    const workoutName = card.dataset.workoutName;
 
-    for (let i = 0; i < results.length; i++) {
-      const workout = results[i];
-      const card = createCard(workout);
-      resultsList.appendChild(card);
+    // Find the workout data based on the name
+    const workout = data.options.find((w) => w.name === workoutName);
+    if (workout) {
+      const detailView = document.querySelector('#detail-view');
+      showDetail(workout, detailView);
+
+      // Hide results list and show detail view
+      document.querySelector('#results-list').style.display = 'none';
+      detailView.style.display = 'block';
     }
   }
 
-  function createCard(workout) {
-    const card = document.createElement('div');
-    card.className = 'workout-card';
-
-    const heading = document.createElement('h3');
-    heading.textContent = workout.name;
-
-    const type = document.createElement('p');
-    type.textContent = workout.type;
-
-    const targetArea = document.createElement('p');
-    targetArea.textContent = workout.targetArea;
-
-    const equipment = document.createElement('p');
-    equipment.textContent = workout.equipment;
-
-    const duration = document.createElement('p');
-    duration.textContent = workout.durationMinutes + ' minutes';
-
-    const difficulty = document.createElement('p');
-    difficulty.textContent = workout.difficulty;
-
-    card.appendChild(heading);
-    card.appendChild(type);
-    card.appendChild(targetArea);
-    card.appendChild(equipment);
-    card.appendChild(duration);
-    card.appendChild(difficulty);
-
-    return card;
+  function handleBackButtonClick(e) {
+    if (e.target.id === 'back-button') {
+      // Hide detail view and show results list
+      document.querySelector('#detail-view').style.display = 'none';
+      document.querySelector('#results-list').style.display = 'block';
+    }
   }
+
+  // Add event listeners for card clicks and back button clicks
+  document.addEventListener('click', handleCardClick);
+  document.addEventListener('click', handleBackButtonClick);
 });
