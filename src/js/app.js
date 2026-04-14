@@ -100,6 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add event listeners for card clicks and back button clicks
-  document.addEventListener('click', handleCardClick);
+  resultsList.addEventListener('click', handleCardClick);
   document.addEventListener('click', handleBackButtonClick);
 });

@@ -1,6 +1,6 @@
 function showResults(items, container) {
   // Clear the container
-  container.innerHTML = '';
+  container.textContent = '';
 
   for (let i = 0; i < items.length; i++) {
     const workout = items[i];
@@ -12,7 +12,7 @@ function showResults(items, container) {
 // Takes a container element. Clears it and shows a "no results" message.
 function showNoResults(container) {
   // Clear the container
-  container.innerHTML = '';
+  container.textContent = '';
 
   // Create display message
   const message = document.createElement('p');
