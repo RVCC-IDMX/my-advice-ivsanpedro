@@ -10,11 +10,11 @@ footerText.textContent = 'Built by Ivana San Pedro 2026';
 footer.append(footerText);
 document.body.append(footer);
 
-// Adds a light pink border to the form section to highlight
+// Adds a purple border to the form section to highlight
 const formSection = document.querySelector('.left-col');
 formSection.classList.add('highlight-experiment');
 
-// Adds a light blue border to the results section to highlight
+// Adds a purple border to the results section to highlight
 const resultsSection = document.querySelector('.right-col');
 resultsSection.classList.add('highlight-experiment');
 
@@ -74,10 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleCardClick(e) {
     // Check if the click was on a card or inside a card
-    const card = e.target.closest('.workout-card');
-    if (!card) return; // Click was outside a card
+    const clickedCard = e.target.closest('.workout-card');
+    if (!clickedCard) return; // Click was outside a card
 
-    const workoutName = card.dataset.workoutName;
+    // Hide all other cards
+    const allCards = document.querySelectorAll('.workout-card');
+    allCards.forEach((card) => {
+      if (card !== clickedCard) {
+        card.classList.add('hidden');
+      }
+    });
+
+    const workoutName = clickedCard.dataset.workoutName;
 
     // Find the workout data based on the name
     const workout = data.options.find((w) => w.name === workoutName);
@@ -86,16 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
       showDetail(workout, detailView);
 
       // Hide results list and show detail view
-      document.querySelector('#results-list').style.display = 'none';
-      detailView.style.display = 'block';
+      document.querySelector('#results-list').classList.add('hidden');
+      detailView.classList.remove('hidden');
     }
   }
 
   function handleBackButtonClick(e) {
     if (e.target.id === 'back-button') {
       // Hide detail view and show results list
-      document.querySelector('#detail-view').style.display = 'none';
-      document.querySelector('#results-list').style.display = 'block';
+      document.querySelector('#detail-view').classList.add('hidden');
+      document.querySelector('#results-list').classList.remove('hidden');
+
+      // Show all workout cards again
+      const allCards = document.querySelectorAll('.workout-card');
+      allCards.forEach((card) => {
+        card.classList.remove('hidden');
+      });
     }
   }
 

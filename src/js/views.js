@@ -23,7 +23,7 @@ function showNoResults(container) {
 
 function showDetail(item, container) {
   // Clear the container
-  container.innerHTML = '';
+  container.textContent = '';
 
   // New container
   const detailContainer = document.createElement('div');
