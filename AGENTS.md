@@ -2,8 +2,8 @@
 
 ## About this student
 
-JavaScript student, post-midterm. Just learned about view and event functions, DOM manipulation, SPA, and callback functions.
-Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES modules (`import`/`export`), npm, git, and Netlify. Has NOT done async or APIs yet. 
+JavaScript student, post-midterm. Currently learning async/await, try/catch, response.ok, serverless functions, and local storage caching. This week they will replace static data with live API data and write serverless functions.
+Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES modules (`import`/`export`), npm, git, Netlify, view and event functions, DOM manipulation, SPA, and callback functions. 
 
 ## How to help
 
@@ -25,12 +25,18 @@ Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES mo
 
 - ES modules only — `import`/`export`, never `require`
 - `const` by default; `let` only when reassignment needed; never `var`
-- `textContent` for user input in DOM; `innerHTML` only for hardcoded template literals
+- `textContent` for user input in DOM
 - No `eval()`; `console.log` is allowed for debugging during development
 - No `fetch()`, `async`, `await`, or Promises — all data must come from the local `data.js` array
 - Logic functions (filtering, matching, data) must not touch the DOM — keep them testable
 - Use addEventListener - not onClick
 - Use .append() — never .appendChild()
+- Use template literals over concatenation
+
+## Async / Fetch 
+- Wrap fetch calls in try/catch
+- Check response.ok before checking response.json()
+- Show errors in the DOM
 
 
 ### HTML

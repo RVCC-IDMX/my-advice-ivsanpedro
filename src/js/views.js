@@ -2,8 +2,7 @@ function showResults(items, container) {
   // Clear the container
   container.textContent = '';
 
-  for (let i = 0; i < items.length; i++) {
-    const workout = items[i];
+  for (const workout of items) {
     const card = createCard(workout);
     container.append(card);
   }
@@ -36,19 +35,20 @@ function showDetail(item, container) {
 
   // Create details
   const type = document.createElement('p');
-  type.textContent = 'Type: ' + item.type;
+  type.textContent = `Type: ${item.type}`;
 
   const targetArea = document.createElement('p');
-  targetArea.textContent = 'Target Area: ' + item.targetArea;
+  targetArea.textContent = `Target Area: ${item.targetArea}`;
 
   const equipment = document.createElement('p');
-  equipment.textContent = 'Equipment: ' + item.equipment;
+  equipment.textContent = `Equipment: ${item.equipment}`;
 
   const duration = document.createElement('p');
-  duration.textContent = 'Duration: ' + item.durationMinutes + ' minutes';
+  // Template literal to match the format of the duration in the data
+  duration.textContent = `Duration: ${item.durationMinutes} minutes`;
 
   const difficulty = document.createElement('p');
-  difficulty.textContent = 'Difficulty: ' + item.difficulty;
+  difficulty.textContent = `Difficulty: ${item.difficulty}`;
 
   // Append details to container
   detailContainer.append(type, targetArea, equipment, duration, difficulty);

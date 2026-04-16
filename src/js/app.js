@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Convert numbers to strings for matching
     if (preferences.duration) {
-      preferences.duration = preferences.duration.toString() + ' minutes';
+      preferences.duration = `${preferences.duration} minutes`;
     }
 
     //Find the results that match the preferences
@@ -79,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide all other cards
     const allCards = document.querySelectorAll('.workout-card');
-    allCards.forEach((card) => {
+    for (const card of allCards) {
       if (card !== clickedCard) {
         card.classList.add('hidden');
       }
-    });
+    }
 
     const workoutName = clickedCard.dataset.workoutName;
 
@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Show all workout cards again
       const allCards = document.querySelectorAll('.workout-card');
-      allCards.forEach((card) => {
+      for (const card of allCards) {
         card.classList.remove('hidden');
-      });
+      }
     }
   }
 

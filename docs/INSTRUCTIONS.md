@@ -39,7 +39,7 @@ The Week 4 PR delivers upgraded tooling (ESLint 9 + eslint-plugin-unicorn) and a
 
 8. **Log each fix in `docs/error-log.md`.**
 
-9. **Update AGENTS.md.** Add async/fetch rules for the week ahead and note the new enforcement layer. Your agent needs to know about `async/await`, `try/catch`, and `response.ok` before you start writing fetch code.
+9. **Update AGENTS.md.** Add async/fetch rules for the week ahead and note the new enforcement layer. Your agent needs to know about `async/await`, `try/catch`, and `response.ok` before you start writing fetch code. 
 
 10. **Test the starter function.** Run `npm run dev:api` and visit `http://localhost:8888/.netlify/functions/api` in your browser. You should see Dog API data that the serverless function returns. This function works right now — you will replace its data source in Part 1.
 

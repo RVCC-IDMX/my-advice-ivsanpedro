@@ -21,8 +21,8 @@
 const footer = document.createElement('footer');
 const footerText = document.createElement('p');
 footerText.textContent = 'Built by Ivana San Pedro🧌';
-footer.appendChild(footerText);
-document.body.appendChild(footer);
+footer.append(footerText);
+document.body.append(footer);
 
 // Experiment 4: Toggle
 // Adds a light pink border to the form section to highlight it as part of an experiment.
