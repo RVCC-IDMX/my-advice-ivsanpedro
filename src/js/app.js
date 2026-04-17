@@ -120,6 +120,7 @@ function handleCardClick(e, allWorkouts, resultsList, detailView) {
     showDetail(workout, detailView);
     resultsList.classList.add('hidden');
     detailView.classList.remove('hidden');
+    resultsList.classList.remove('results-list'); // Remove the flex layout to prevent styling issues in detail view
   }
 }
 

@@ -143,7 +143,7 @@ form#preference-form button:hover {
   box-shadow: 0 6px 12px hsla(220, 80%, 55%, 0.3);
 }
 
-#results-list {
+.results-list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
