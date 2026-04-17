@@ -34,9 +34,9 @@ Knows: `const`/`let`, template literals, `if/else`, arrays, objects, JSON, ES mo
 - Use template literals over concatenation
 
 ## Async / Fetch 
-- Wrap fetch calls in try/catch
+- Wrap fetch calls in try/catch and return a '502' if something goes wrong
 - Check response.ok before checking response.json()
-- Show errors in the DOM
+- Wrap async code in try/catch
 
 
 ### HTML
