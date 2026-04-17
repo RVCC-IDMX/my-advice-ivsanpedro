@@ -6,7 +6,7 @@
  */
 export function matchesType(workout, type) {
   if (!type) return true; // If no type is selected, match all
-  return workout.type === type;
+  return workout.type.toLowerCase().includes(type.toLowerCase());
 }
 
 /**
@@ -16,7 +16,7 @@ export function matchesType(workout, type) {
  */
 export function matchesTarget(workout, targetArea) {
   if (!targetArea) return true; // If no target area is selected, match all
-  return workout.targetArea === targetArea;
+  return workout.targetArea.toLowerCase().includes(targetArea.toLowerCase());
 }
 
 /**
@@ -26,7 +26,7 @@ export function matchesTarget(workout, targetArea) {
  */
 export function matchesEquipment(workout, equipment) {
   if (!equipment) return true; // If no equipment is selected, match all
-  return workout.equipment === equipment;
+  return workout.equipment.toLowerCase().includes(equipment.toLowerCase());
 }
 
 /**

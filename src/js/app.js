@@ -1,7 +1,127 @@
 // app.js for Workout Recommender
-import { data } from './data.js';
 import { matchesAllPreferences } from './matching.js';
-import { showResults, showNoResults, showDetail } from './views.js';
+import {
+  showResults,
+  showNoResults,
+  showDetail,
+  showLoadingMessage,
+} from './views.js';
+
+/**
+ * Fetches workout data from the serverless function.
+ * @returns {Promise<Array>} A promise that resolves to an array of workout objects.
+ * @throws Will throw an error if the fetch fails or if the response is not OK.
+ */
+async function fetchWorkouts() {
+  try {
+    const response = await fetch('/.netlify/functions/api');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const workoutData = await response.json();
+    return workoutData.data; // The API returns { data: [...] }
+  } catch {
+    showNoResults(document.querySelector('#results-list'));
+    return []; // Return an empty array so the app doesn't crash
+  }
+}
+
+/**
+ * The main function that initializes the application.
+ */
+async function main() {
+  // Fetch the workout data
+  const workouts = await fetchWorkouts();
+
+  // If there's no data, we don't need to set up the rest of the app
+  if (workouts.length === 0) {
+    // The fetchWorkouts function will have already show an error
+    return;
+  }
+
+  // Get DOM elements
+  const form = document.querySelector('#preference-form');
+  const resultsList = document.querySelector('#results-list');
+  const detailView = document.querySelector('#detail-view');
+
+  // Handle form submission
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Show loading message while we filter results
+    showLoadingMessage(resultsList);
+
+    const preferences = {
+      type: document.querySelector('#type').value,
+      targetArea: document.querySelector('#target').value,
+      equipment: document.querySelector('#equipment').value,
+      duration: document.querySelector('#duration').value,
+      difficulty: document.querySelector('#difficulty').value,
+    };
+
+    // This is a quick way to simulate a delay for the loading message.
+    // In a real app, you might not need this if the filtering is slow enough.
+    setTimeout(() => {
+      const results = findResults(preferences, workouts);
+
+      if (results.length === 0) {
+        showNoResults(resultsList);
+      } else {
+        showResults(results, resultsList);
+      }
+
+      // Hide detail view and show results list
+      detailView.classList.add('hidden');
+      resultsList.classList.remove('hidden');
+    }, 300); // 300ms delay
+  });
+
+  // Handle clicks on workout cards
+  resultsList.addEventListener('click', (e) =>
+    handleCardClick(e, workouts, resultsList, detailView)
+  );
+
+  // Handle clicks on the "back" button in the detail view
+  detailView.addEventListener('click', (e) => {
+    if (e.target.matches('#back-button')) {
+      detailView.classList.add('hidden');
+      resultsList.classList.remove('hidden');
+    }
+  });
+}
+
+/**
+ * Find workouts that match all user preferences.
+ * @param {object} preference - The user's workout preferences.
+ * @param {Array} allWorkouts - The array of all available workouts.
+ * @returns {Array} An array of workouts that match the user's preferences.
+ */
+function findResults(preference, allWorkouts) {
+  return allWorkouts.filter((workout) =>
+    matchesAllPreferences(workout, preference)
+  );
+}
+
+/**
+ * Handles the click event on a workout card.
+ * @param {Event} e - The click event.
+ * @param {Array} allWorkouts - The array of all available workouts.
+ * @param {HTMLElement} resultsList - The container for the results list.
+ * @param {HTMLElement} detailView - The container for the detail view.
+ */
+function handleCardClick(e, allWorkouts, resultsList, detailView) {
+  const clickedCard = e.target.closest('.workout-card');
+  if (!clickedCard) return;
+
+  const workoutName = clickedCard.dataset.workoutName;
+  const workout = allWorkouts.find((w) => w.name === workoutName);
+
+  if (workout) {
+    showDetail(workout, detailView);
+    resultsList.classList.add('hidden');
+    detailView.classList.remove('hidden');
+  }
+}
 
 // Adds a footer into the HTML
 const footer = document.createElement('footer');
@@ -18,102 +138,5 @@ formSection.classList.add('highlight-experiment');
 const resultsSection = document.querySelector('.right-col');
 resultsSection.classList.add('highlight-experiment');
 
-// Event listener for form submission and result handling
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('#preference-form');
-  const resultsList = document.querySelector('#results-list');
-  // Handle form submission
-  form.addEventListener('submit', function (e) {
-    // Prevent form from submitting normally
-    e.preventDefault();
-
-    // Get user preferences
-    const preferences = {
-      type: document.querySelector('#type').value,
-      targetArea: document.querySelector('#target').value,
-      equipment: document.querySelector('#equipment').value,
-      duration: document.querySelector('#duration').value,
-      difficulty: document.querySelector('#difficulty').value,
-    };
-
-    //Convert numbers to strings for matching
-    if (preferences.duration) {
-      preferences.duration = `${preferences.duration} minutes`;
-    }
-
-    //Find the results that match the preferences
-    const results = findResults(preferences);
-
-    // Display the results
-    if (results.length === 0) {
-      showNoResults(resultsList);
-      return;
-    } else {
-      showResults(results, resultsList);
-    }
-  });
-
-  /**
-   * Find workouts that match all user preferences
-   * @param {*} workout - The workout to check
-   * @param {*} preference - The user's workout preferences
-   * @returns An array of workouts that match the user's preferences
-   */
-  function findResults(preference) {
-    const results = [];
-
-    //Check each workout
-    for (let i = 0; i < data.options.length; i++) {
-      const workout = data.options[i];
-      if (matchesAllPreferences(workout, preference)) {
-        results.push(workout);
-      }
-    }
-    return results;
-  }
-
-  function handleCardClick(e) {
-    // Check if the click was on a card or inside a card
-    const clickedCard = e.target.closest('.workout-card');
-    if (!clickedCard) return; // Click was outside a card
-
-    // Hide all other cards
-    const allCards = document.querySelectorAll('.workout-card');
-    for (const card of allCards) {
-      if (card !== clickedCard) {
-        card.classList.add('hidden');
-      }
-    }
-
-    const workoutName = clickedCard.dataset.workoutName;
-
-    // Find the workout data based on the name
-    const workout = data.options.find((w) => w.name === workoutName);
-    if (workout) {
-      const detailView = document.querySelector('#detail-view');
-      showDetail(workout, detailView);
-
-      // Hide results list and show detail view
-      document.querySelector('#results-list').classList.add('hidden');
-      detailView.classList.remove('hidden');
-    }
-  }
-
-  function handleBackButtonClick(e) {
-    if (e.target.id === 'back-button') {
-      // Hide detail view and show results list
-      document.querySelector('#detail-view').classList.add('hidden');
-      document.querySelector('#results-list').classList.remove('hidden');
-
-      // Show all workout cards again
-      const allCards = document.querySelectorAll('.workout-card');
-      for (const card of allCards) {
-        card.classList.remove('hidden');
-      }
-    }
-  }
-
-  // Add event listeners for card clicks and back button clicks
-  resultsList.addEventListener('click', handleCardClick);
-  document.addEventListener('click', handleBackButtonClick);
-});
+// Start the application
+main();

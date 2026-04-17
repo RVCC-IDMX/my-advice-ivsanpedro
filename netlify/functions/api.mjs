@@ -21,38 +21,50 @@
  * @returns {object} The transformed data.
  */
 function transformData(apiData) {
-  const workouts = apiData.results.map((item) => {
-    return {
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      // Use optional chaining and default values to handle missing data
-      // If the property doesn't exist, use the default value
-      type: item.category?.name || 'N/A',
-      targetArea: item.muscles?.[0]?.name || 'Varies',
-      equipment: item.equipment?.[0]?.name || 'Bodyweight',
-      durationMinutes: 15, // Default value
-      difficulty: 'Varies', // Default value
-    };
-  });
+  const workouts = apiData.results
+    .map((item) => {
+      // Find the English translation (language id 2)
+      const englishTranslation = item.translations.find(
+        (t) => t.language === 2
+      );
+
+      // If there's no English translation, we can't show the workout
+      if (!englishTranslation) {
+        return null;
+      }
+
+      return {
+        id: item.id,
+        name: englishTranslation.name,
+        description: englishTranslation.description,
+        type: item.category?.name || 'N/A',
+        targetArea: item.muscles?.[0]?.name || 'Varies',
+        equipment: item.equipment?.[0]?.name || 'Bodyweight',
+        durationMinutes: 15, // Default value
+        difficulty: 'Varies', // Default value
+      };
+    })
+    .filter(Boolean); // Remove any null entries
 
   return { data: workouts };
 }
 
 export default async () => {
+  // Wrap the call in a try/catch to handle errors gracefully
   try {
     const response = await fetch(
       // 'limit=50' is added to get a reasonable amount of data for testing.
       'https://wger.de/api/v2/exerciseinfo/?format=json&limit=50'
     );
+    // Check if the response is OK (status in the range 200-299)
     if (!response.ok) {
+      // Return a 502 Bad Gateway response if the API request failed
       return new Response(JSON.stringify({ error: 'API request failed' }), {
         status: 502,
         headers: { 'Content-Type': 'application/json' },
       });
     }
     const json = await response.json();
-    // Transform the data to match the shape expected by the front-end components
     const transformedData = transformData(json);
 
     return new Response(JSON.stringify(transformedData), {

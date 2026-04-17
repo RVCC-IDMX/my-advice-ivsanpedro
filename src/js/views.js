@@ -20,6 +20,17 @@ function showNoResults(container) {
   container.append(message);
 }
 
+// Takes a container element. Clears it and shows a loading message.
+function showLoadingMessage(container) {
+  // Clear the container
+  container.textContent = '';
+
+  // Create display message
+  const message = document.createElement('p');
+  message.textContent = 'Loading workouts...';
+  container.append(message);
+}
+
 function showDetail(item, container) {
   // Clear the container
   container.textContent = '';
@@ -77,4 +88,4 @@ function createCard(workout) {
   return card;
 }
 
-export { showResults, showNoResults, showDetail };
+export { showResults, showNoResults, showDetail, showLoadingMessage };
