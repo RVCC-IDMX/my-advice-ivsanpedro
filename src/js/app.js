@@ -112,7 +112,6 @@ function findResults(preference, allWorkouts) {
 function handleCardClick(e, allWorkouts, resultsList, detailView) {
   const clickedCard = e.target.closest('.workout-card');
   if (!clickedCard) return;
-
   const workoutName = clickedCard.dataset.workoutName;
   const workout = allWorkouts.find((w) => w.name === workoutName);
 

@@ -61,6 +61,15 @@ function showDetail(item, container) {
   const difficulty = document.createElement('p');
   difficulty.textContent = `Difficulty: ${item.difficulty}`;
 
+  // Add image if available
+  if (item.images && item.images.length > 0) {
+    const img = document.createElement('img');
+    img.src = item.images[0].image;
+    img.alt = `${item.name} illustration`;
+    img.className = 'workout-image';
+    detailContainer.append(img);
+  }
+
   // Append details to container
   detailContainer.append(type, targetArea, equipment, duration, difficulty);
 

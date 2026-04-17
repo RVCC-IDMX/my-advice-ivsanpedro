@@ -228,3 +228,10 @@ form#preference-form button:hover {
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px var(--color-shadow);
 }
+
+.workout-image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+}

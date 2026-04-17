@@ -37,6 +37,7 @@ function transformData(apiData) {
         id: item.id,
         name: englishTranslation.name,
         description: englishTranslation.description,
+        images: item.images, // Pass the images array
         type: item.category?.name || 'N/A',
         targetArea: item.muscles?.[0]?.name || 'Varies',
         equipment: item.equipment?.[0]?.name || 'Bodyweight',
