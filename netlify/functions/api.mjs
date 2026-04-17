@@ -14,14 +14,36 @@
  * for a walkthrough.
  */
 
+/**
+ * Takes the raw data from the wger API and transforms it into the shape
+ * that the front-end components expect.
+ * @param {object} apiData - The raw data from the API.
+ * @returns {object} The transformed data.
+ */
+function transformData(apiData) {
+  const workouts = apiData.results.map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      // Use optional chaining and default values to handle missing data
+      // If the property doesn't exist, use the default value
+      type: item.category?.name || 'N/A',
+      targetArea: item.muscles?.[0]?.name || 'Varies',
+      equipment: item.equipment?.[0]?.name || 'Bodyweight',
+      durationMinutes: 15, // Default value
+      difficulty: 'Varies', // Default value
+    };
+  });
+
+  return { data: workouts };
+}
+
 export default async () => {
   try {
-    /**
-     * TODO: Replace hardcoded data with a fetch to your API.
-     */
-
     const response = await fetch(
-      'https://wger.de/api/v2/exerciseinfo/?format=json'
+      // 'limit=50' is added to get a reasonable amount of data for testing.
+      'https://wger.de/api/v2/exerciseinfo/?format=json&limit=50'
     );
     if (!response.ok) {
       return new Response(JSON.stringify({ error: 'API request failed' }), {
@@ -30,16 +52,10 @@ export default async () => {
       });
     }
     const json = await response.json();
+    // Transform the data to match the shape expected by the front-end components
+    const transformedData = transformData(json);
 
-    // TODO: Transform `json` into the shape your views expect
-    // and return it below. For now, let's just see the data.
-    // Shows raw data from the API in the terminal.
-    console.log(json);
-
-    // For now, we'll return an empty data array so the app doesn't crash.
-    const sampleData = { data: [] };
-
-    return new Response(JSON.stringify(sampleData), {
+    return new Response(JSON.stringify(transformedData), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
