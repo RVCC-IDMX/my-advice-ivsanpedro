@@ -63,7 +63,6 @@ async function fetchWorkouts() {
  * @returns {boolean} True if the data is a valid array of workouts, false otherwise.
  */
 function isCacheValid(data) {
-  // Is it an array? Does it have items? Does the first item have the expected shape?
   return (
     Array.isArray(data) &&
     data.length > 0 &&
