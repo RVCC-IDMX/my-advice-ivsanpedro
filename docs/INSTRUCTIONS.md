@@ -92,7 +92,7 @@ Replace `import { data } from './data.js'` with a fetch call to your serverless 
 4. **Add a loading state** so the user sees something while data loads. A simple "Loading..." message in the output container works.
 
 5. **Add error handling:**
-   - Wrap the fetch in `try/catch`
+   - Wrap the fetch in `try/catch` 
    - Check `response.ok` before calling `response.json()`
    - Show an error message in the DOM if the fetch fails — not just `console.log`
 
