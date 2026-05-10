@@ -64,7 +64,7 @@ function showDetail(item, container) {
   // Add image if available
   if (item.images && item.images.length > 0) {
     const img = document.createElement('img');
-    img.src = item.images[0].image;
+    img.src = `https://wger.de${item.images[0].image}`;
     img.alt = `${item.name} illustration`;
     img.className = 'workout-image';
     detailContainer.append(img);
