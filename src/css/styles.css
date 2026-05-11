@@ -45,6 +45,7 @@ header {
   );
   color: white;
   box-shadow: 0 4px 12px var(--color-shadow);
+  margin-bottom: 1rem;
 }
 
 h1 {

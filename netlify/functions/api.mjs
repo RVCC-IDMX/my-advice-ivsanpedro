@@ -50,7 +50,7 @@ function transformData(apiData) {
   return { data: workouts };
 }
 
-import { SYSTEM_PROMPT } from './groq-schema.js';
+import { SYSTEM_PROMPT } from './groq-schema.mjs';
 
 const MAX_INPUT = 500;
 

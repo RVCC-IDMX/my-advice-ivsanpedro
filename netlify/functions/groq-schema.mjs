@@ -2,13 +2,13 @@
 // Schema and system prompt for translating user input into wger API parameters
 
 export const GROQ_SCHEMA = {
-  search: 'string | null',           // e.g., "pushups", "running"
-  category: 'string | null',         // e.g., "Strength", "Cardio", "HIIT", "Flexibility"
-  targetMuscles: 'string | null',    // e.g., "Chest", "Legs", "Back", "Core"
-  equipment: 'string | null',        // e.g., "Dumbbells", "Kettlebell", "No Equipment"
-  difficulty: 'string | null',       // e.g., "Beginner", "Intermediate", "Advanced"
-  refused: 'boolean',                // true if request is off-topic
-  refusal_reason: 'string'           // explanation if refused
+  search: 'string | null', // e.g., "pushups", "running"
+  category: 'string | null', // e.g., "Strength", "Cardio", "HIIT", "Flexibility"
+  targetMuscles: 'string | null', // e.g., "Chest", "Legs", "Back", "Core"
+  equipment: 'string | null', // e.g., "Dumbbells", "Kettlebell", "No Equipment"
+  difficulty: 'string | null', // e.g., "Beginner", "Intermediate", "Advanced"
+  refused: 'boolean', // true if request is off-topic
+  refusal_reason: 'string', // explanation if refused
 };
 
 export const SYSTEM_PROMPT = `
