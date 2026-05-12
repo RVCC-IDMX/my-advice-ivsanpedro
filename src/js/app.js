@@ -1,5 +1,5 @@
 // app.js for Workout Recommender
-//import { matchesAllPreferences } from './matching.js';
+import { matchesAllPreferences } from './matching.js';
 import {
   showResults,
   showNoResults,
@@ -98,13 +98,13 @@ async function main() {
   }
 
   // Get DOM elements
-
-  // Pattern A: Free-text search form
+  const preferenceForm = document.querySelector('#preference-form');
   const searchForm = document.querySelector('#search-form');
   const searchInput = document.querySelector('#search-input');
   const resultsList = document.querySelector('#results-list');
   const detailView = document.querySelector('#detail-view');
 
+  // Pattern A: Free-text search form
   searchForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     showLoadingMessage(resultsList);
@@ -137,6 +137,38 @@ async function main() {
     }
   });
 
+  // Local preference form handler
+  preferenceForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Show loading message while we filter results
+    showLoadingMessage(resultsList);
+
+    const preferences = {
+      type: document.querySelector('#type').value,
+      targetArea: document.querySelector('#target').value,
+      equipment: document.querySelector('#equipment').value,
+      duration: document.querySelector('#duration').value,
+      difficulty: document.querySelector('#difficulty').value,
+    };
+
+    // This is a quick way to simulate a delay for the loading message.
+    // In a real app, you might not need this if the filtering is slow enough.
+    setTimeout(() => {
+      const results = findResults(preferences, workouts);
+
+      if (results.length === 0) {
+        showNoResults(resultsList);
+      } else {
+        showResults(results, resultsList);
+      }
+
+      // Hide detail view and show results list
+      detailView.classList.add('hidden');
+      resultsList.classList.remove('hidden');
+    }, 300); // 300ms delay
+  });
+
   // Handle clicks on workout cards
   resultsList.addEventListener('click', (e) =>
     handleCardClick(e, workouts, resultsList, detailView)
@@ -149,6 +181,18 @@ async function main() {
       resultsList.classList.remove('hidden');
     }
   });
+}
+
+/**
+ * Find workouts that match all user preferences.
+ * @param {object} preference - The user's workout preferences.
+ * @param {Array} allWorkouts - The array of all available workouts.
+ * @returns {Array} An array of workouts that match the user's preferences.
+ */
+function findResults(preference, allWorkouts) {
+  return allWorkouts.filter((workout) =>
+    matchesAllPreferences(workout, preference)
+  );
 }
 
 /**
@@ -188,4 +232,8 @@ const resultsSection = document.querySelector('.right-col');
 resultsSection.classList.add('highlight-experiment');
 
 // Start the application
-main();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', main);
+} else {
+  main();
+}
