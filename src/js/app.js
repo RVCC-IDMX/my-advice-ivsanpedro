@@ -124,9 +124,27 @@ async function main() {
       });
       const data = await response.json();
       if (data.refused) {
-        // Show refusal UI (simple for now)
-        resultsList.textContent =
+        // Show improved refusal UI with examples
+        resultsList.textContent = '';
+        const refusalMsg = document.createElement('p');
+        refusalMsg.textContent =
           data.refusal_reason || 'Sorry, your request could not be processed.';
+        refusalMsg.style.fontWeight = 'bold';
+        refusalMsg.style.marginBottom = '0.5em';
+
+        const guidance = document.createElement('p');
+        guidance.textContent =
+          'Try asking for a workout using clear, specific language. For example:';
+
+        const examples = document.createElement('ul');
+        examples.style.marginTop = '0.25em';
+        examples.textContent = `
+          <li>"A 20-minute dumbbell workout for arms"</li>
+          <li>"Beginner bodyweight exercises for legs"</li>
+          <li>"Intermediate chest workout with barbell"</li>
+        `;
+
+        resultsList.append(refusalMsg, guidance, examples);
       } else if (data.data && data.data.length > 0) {
         showResults(data.data, resultsList);
       } else {
