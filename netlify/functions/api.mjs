@@ -14,6 +14,8 @@
  * for a walkthrough.
  */
 
+console.log('GROQ_API_KEY:', process.env.GROQ_API_KEY ? 'set' : 'NOT SET');
+
 /**
  * Takes the raw data from the wger API and transforms it into the shape
  * that the front-end components expect.
@@ -57,7 +59,15 @@ const MAX_INPUT = 500;
 export default async (event) => {
   try {
     // 1. Get user input from POST body
-    const userInput = event?.body || '';
+    const userInput =
+      typeof event.body === 'string'
+        ? event.body
+        : await (async () => {
+            const decoder = new TextDecoder();
+            const body = [];
+            for await (const chunk of event.body) body.push(chunk);
+            return decoder.decode(Buffer.concat(body));
+          })();
     if (userInput.length > MAX_INPUT) {
       return new Response(JSON.stringify({ error: 'Input too long' }), {
         status: 400,
@@ -89,9 +99,14 @@ export default async (event) => {
           }),
         }
       );
-      const groqData = await groqResponse.json();
+      console.log('Groq status:', groqResponse.status);
+      const groqText = await groqResponse.text();
+      console.log('Groq response:', groqText);
+      const groqData = JSON.parse(groqText);
       params = JSON.parse(groqData.choices[0].message.content);
-    } catch {
+      console.log('Groq params:', params);
+    } catch (err) {
+      console.log('Groq error:', err);
       return new Response(
         JSON.stringify({ error: 'Groq translation failed' }),
         {
@@ -120,29 +135,69 @@ export default async (event) => {
       'https://wger.de/api/v2/exerciseinfo/?format=json&limit=50'
     );
     if (params.search) url.searchParams.set('search', params.search);
-    if (params.category) url.searchParams.set('category', params.category);
-    if (params.targetMuscles)
-      url.searchParams.set('muscles', params.targetMuscles);
-    if (params.equipment) url.searchParams.set('equipment', params.equipment);
-    // Note: wger API may require IDs for category/muscles/equipment; you may need a lookup table
-
+    if (params.category && CATEGORY_MAP[params.category])
+      url.searchParams.set('category', CATEGORY_MAP[params.category]);
+    if (params.targetMuscles && MUSCLE_MAP[params.targetMuscles])
+      url.searchParams.set('muscles', MUSCLE_MAP[params.targetMuscles]);
+    if (params.equipment && EQUIPMENT_MAP[params.equipment])
+      url.searchParams.set('equipment', EQUIPMENT_MAP[params.equipment]);
+    console.log('wger API url:', url.toString());
     const response = await fetch(url);
-    if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'API request failed' }), {
-        status: 502,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    console.log('wger API status:', response.status);
     const json = await response.json();
+    console.log('wger API response:', JSON.stringify(json).slice(0, 500)); // Print first 500 chars
     const transformedData = transformData(json);
+    console.log(
+      'Transformed data:',
+      JSON.stringify(transformedData).slice(0, 500)
+    ); // Print first 500 chars
 
     return new Response(JSON.stringify(transformedData), {
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+  } catch {
+    return new Response(JSON.stringify({ error: 'An error occurred' }), {
       status: 502,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 };
+
+// --- Lookup tables for wger API ---
+const EQUIPMENT_MAP = {
+  Dumbbells: 3,
+  Barbell: 1,
+  'SZ-Bar': 2,
+  'Gym mat': 7,
+  'Swiss Ball': 8,
+  'Pull-up bar': 9,
+  'none (bodyweight)': 7, // wger uses 7 for 'bodyweight' (see docs)
+  Bench: 10,
+  'Incline bench': 11,
+  Kettlebell: 12,
+};
+const MUSCLE_MAP = {
+  'Biceps brachii': 1,
+  'Anterior deltoid': 2,
+  'Serratus anterior': 3,
+  'Pectoralis major': 4,
+  'Triceps brachii': 5,
+  'Rectus abdominis': 6,
+  Gastrocnemius: 7,
+  'Gluteus maximus': 8,
+  Trapezius: 9,
+  'Quadriceps femoris': 10,
+  'Biceps femoris': 11,
+  'Latissimus dorsi': 12,
+  Brachialis: 13,
+  'Obliquus externus': 14,
+  Soleus: 15,
+  Infraspinatus: 16,
+};
+const CATEGORY_MAP = {
+  Strength: 10,
+  Cardio: 8,
+  HIIT: 15,
+  Flexibility: 14,
+};
+// --- End lookup tables ---
