@@ -52,3 +52,24 @@ Your docs folder has everything you need:
 The `src/` folder is where your generated site's code will go. Your AI agent conversation will create files like `src/js/data.js`, `src/js/matching.js`, and `src/js/app.js`, plus `src/css/style.css` for your styles.
 
 A placeholder `index.html` is included so the project builds and runs from the start. Your AI agent conversation will replace it with your real site.
+
+## Groq integration (final project)
+
+This project integrates Groq for natural-language search and filtering. When a user enters a free-text query, the serverless function sends the input to Groq, which translates it into structured parameters for the wger API. The results are then transformed and rendered in the view layer. This enables conversational search like "I want a quick cardio workout" or "Show me dumbbell arm exercises."
+
+### Moderation and security
+- All user input is delimited and capped at 500 characters before being sent to Groq.
+- Groq is instructed to return only structured JSON output matching a strict schema.
+- The system prompt, JSON mode, and refusal logic are enforced to prevent prompt injection and off-topic responses.
+
+### Environment variable requirement
+You must set a Groq API key for the integration to work locally and in production:
+
+- Locally: set the environment variable before running Netlify dev:
+  ```bash
+  export GROQ_API_KEY=your-groq-api-key
+  netlify dev
+  ```
+- On Netlify: add GROQ_API_KEY in your site’s environment variables in the Netlify dashboard.
+
+If the key is missing, the Groq-powered features will not work.
