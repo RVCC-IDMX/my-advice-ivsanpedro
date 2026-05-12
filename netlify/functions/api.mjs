@@ -14,8 +14,6 @@
  * for a walkthrough.
  */
 
-console.log('GROQ_API_KEY:', process.env.GROQ_API_KEY ? 'set' : 'NOT SET');
-
 /**
  * Takes the raw data from the wger API and transforms it into the shape
  * that the front-end components expect.
@@ -54,6 +52,7 @@ function transformData(apiData) {
 
 import { SYSTEM_PROMPT } from './groq-schema.mjs';
 
+//Reject input over 500 characters before the Groq call
 const MAX_INPUT = 500;
 
 export default async (event) => {
@@ -139,7 +138,7 @@ export default async (event) => {
       url.searchParams.set('category', CATEGORY_MAP[params.category]);
     if (params.targetMuscles && MUSCLE_MAP[params.targetMuscles])
       url.searchParams.set('muscles', MUSCLE_MAP[params.targetMuscles]);
-    if (params.equipment && EQUIPMENT_MAP[params.equipment])
+    if (params.equipment && EQUIPMENT_MAP[params.equipment] !== undefined)
       url.searchParams.set('equipment', EQUIPMENT_MAP[params.equipment]);
     console.log('wger API url:', url.toString());
     const response = await fetch(url);
@@ -151,6 +150,36 @@ export default async (event) => {
       'Transformed data:',
       JSON.stringify(transformedData).slice(0, 500)
     ); // Print first 500 chars
+
+    // Post-process: filter to only include exercises where the selected muscle is the primary target
+    let filteredData = transformedData.data;
+    if (params.targetMuscles && MUSCLE_MAP[params.targetMuscles]) {
+      filteredData = filterByPrimaryMuscle(
+        json.results,
+        MUSCLE_MAP[params.targetMuscles]
+      )
+        .map((item) => {
+          const englishTranslation = item.translations.find(
+            (t) => t.language === 2
+          );
+          if (!englishTranslation) return null;
+          return {
+            id: item.id,
+            name: englishTranslation.name,
+            description: englishTranslation.description,
+            images: item.images,
+            type: item.category?.name || 'N/A',
+            targetArea: item.muscles?.[0]?.name || 'Varies',
+            equipment: item.equipment?.[0]?.name || 'Bodyweight',
+            durationMinutes: 15,
+            difficulty: 'Varies',
+          };
+        })
+        .filter(Boolean);
+      return new Response(JSON.stringify({ data: filteredData }), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     return new Response(JSON.stringify(transformedData), {
       headers: { 'Content-Type': 'application/json' },
@@ -171,26 +200,25 @@ const EQUIPMENT_MAP = {
   'Gym mat': 7,
   'Swiss Ball': 8,
   'Pull-up bar': 9,
-  'none (bodyweight)': 7, // wger uses 7 for 'bodyweight' (see docs)
-  Bench: 10,
-  'Incline bench': 11,
-  Kettlebell: 12,
+  'none (bodyweight)': 0,
+  Bench: 5,
+  'Incline bench': 10,
+  Kettleball: 11,
 };
 const MUSCLE_MAP = {
-  'Biceps brachii': 1,
-  'Anterior deltoid': 2,
-  'Serratus anterior': 3,
-  'Pectoralis major': 4,
-  'Triceps brachii': 5,
-  'Rectus abdominis': 6,
-  Gastrocnemius: 7,
-  'Gluteus maximus': 8,
-  Trapezius: 9,
-  'Quadriceps femoris': 10,
-  'Biceps femoris': 11,
-  'Latissimus dorsi': 12,
-  Brachialis: 13,
-  'Obliquus externus': 14,
+  Biceps: 1,
+  Shoulders: 2, // Anterior deltoid
+  Abs: 6, // Rectus abdominis
+  Chest: 4, // Pectoralis major
+  Triceps: 5,
+  Calves: 7, // Gastrocnemius
+  Glutes: 8, // Gluteus maximus
+  Back: 12, // Latissimus dorsi
+  Traps: 9, // Trapezius
+  Quads: 10, // Quadriceps femoris
+  Hamstrings: 11, // Biceps femoris
+  Forearms: 13, // Brachialis
+  Obliques: 14, // Obliquus externus
   Soleus: 15,
   Infraspinatus: 16,
 };
@@ -199,5 +227,15 @@ const CATEGORY_MAP = {
   Cardio: 8,
   HIIT: 15,
   Flexibility: 14,
+  // Add more as needed
 };
-// --- End lookup tables ---
+
+function filterByPrimaryMuscle(workouts, muscleId) {
+  if (!muscleId) return workouts;
+  return workouts.filter((item) => {
+    // wger API: item.muscles is an array of primary muscle IDs
+    return (
+      item.muscles && item.muscles.length > 0 && item.muscles[0] === muscleId
+    );
+  });
+}
